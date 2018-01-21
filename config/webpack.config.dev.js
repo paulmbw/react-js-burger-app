@@ -164,6 +164,11 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
+                  // Important for definining css classes for individual components
+                  modules: true,
+                  // defines the css class name to be generated and assigned
+                  // name-> local-> name of component -> hash -> generate a unique css class name 
+                  localIdentName: '[name]__[local]__[hash:base64:5]'
                 },
               },
               {
