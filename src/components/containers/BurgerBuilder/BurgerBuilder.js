@@ -19,11 +19,11 @@ export class BurgerBuilder extends Component {
 			bacon: 0,
 			cheese: 0,
 		},
-		totalPrice : 4
+		totalPrice : 4,
+		orderReady: false
 	}
 
 	addIngredientHandler = (type) => {
-
 		const updatedCount = this.state.ingredients[type] + 1;
 
 		//state should be changed in an immutable way, therefore, create a copy of the state
@@ -33,12 +33,14 @@ export class BurgerBuilder extends Component {
 
 		updatedIngredients[type] = updatedCount;
 
-		const totalCost = INGREDIENT_PRICES[type] + this.state.totalPrice;
+		const totalCost = this.state.totalPrice + INGREDIENT_PRICES[type];
 
 		this.setState({
 			totalPrice : totalCost,
 			ingredients : updatedIngredients
 		});
+
+		this.updateOrderReadyState(updatedIngredients);
 	}
 
 	removeIngredientHandler = (type) => {
@@ -51,15 +53,29 @@ export class BurgerBuilder extends Component {
 
 			updatedIngredients[type] = updatedCount;
 
-			const totalCost = INGREDIENT_PRICES[type] - this.state.totalPrice;
+			const totalCost = this.state.totalPrice - INGREDIENT_PRICES[type];
 
 			this.setState({
 				totalPrice : totalCost,
 				ingredients : updatedIngredients
 			});
+			this.updateOrderReadyState(updatedIngredients);
 		} else {
-			alert('There is nothing to remove!!');
+			<h1>There is nothing to remove!</h1>
 		}
+	}
+
+	updateOrderReadyState(ingredients) {
+		const sum = Object.keys(ingredients)
+		.map(ingredientKey => {
+			return ingredients[ingredientKey]
+		})
+		.reduce((sum, el) => {
+			return sum + el;
+		}, 0);
+		this.setState({
+			orderReady : sum > 0
+		});
 	}
 
 	render() {
@@ -67,7 +83,11 @@ export class BurgerBuilder extends Component {
 			<Aux>
 				<Burger ingredients={this.state.ingredients}/>
 				<BuildControls ingredientAdded={this.addIngredientHandler} 
-							   ingredientRemoved={this.removeIngredientHandler}/>
+							   ingredientRemoved={this.removeIngredientHandler}
+							   price={this.state.totalPrice}
+							   orderReady={this.state.orderReady}
+							   	/>
+
 			</Aux>
 		);
 	}
