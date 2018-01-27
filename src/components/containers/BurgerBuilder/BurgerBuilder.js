@@ -3,6 +3,8 @@ import Aux from '../../../hoc/Aux';
 import Burger from '../../Burger/Burger';
 
 import BuildControls from '../../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../../components/UI/Modal/Modal';
+import OrderSummary from '../../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
 	salad: 0.5,
@@ -20,7 +22,8 @@ export class BurgerBuilder extends Component {
 			cheese: 0,
 		},
 		totalPrice : 4,
-		orderReady: false
+		orderReady: false,
+		checkoutReady: false
 	}
 
 	addIngredientHandler = (type) => {
@@ -78,16 +81,33 @@ export class BurgerBuilder extends Component {
 		});
 	}
 
+	updateCheckoutReadyHandler = () => {
+		this.setState({checkoutReady : true});
+	}
+
+	purchaseCancelHandler = () => {
+		this.setState({checkoutReady : false});
+	}
+
+	purchaseContinueHandler = () => {
+		alert('Continue!!');
+	}
+
 	render() {
 		return (
 			<Aux>
-				<Burger ingredients={this.state.ingredients}/>
-				<BuildControls ingredientAdded={this.addIngredientHandler} 
-							   ingredientRemoved={this.removeIngredientHandler}
-							   price={this.state.totalPrice}
-							   orderReady={this.state.orderReady}
-							   	/>
-
+			<Modal show={this.state.checkoutReady} modalClosed={this.purchaseCancelHandler}>
+				<OrderSummary ingredients={this.state.ingredients}
+							  purchaseCanceled={this.purchaseCancelHandler}
+							  purchaseContinued={this.purchaseContinueHandler} 
+							  totalPrice={this.state.totalPrice}/>
+			</Modal>
+			<Burger ingredients={this.state.ingredients}/>
+			<BuildControls ingredientAdded={this.addIngredientHandler} 
+						   ingredientRemoved={this.removeIngredientHandler}
+						   price={this.state.totalPrice}
+						   orderReady={this.state.orderReady}
+						   ordered={this.updateCheckoutReadyHandler}	/>
 			</Aux>
 		);
 	}
