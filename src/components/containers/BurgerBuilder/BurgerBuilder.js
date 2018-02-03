@@ -73,7 +73,8 @@ export class BurgerBuilder extends Component {
 			<h1>There is nothing to remove!</h1>
 		}
 	}
-
+	
+	//enables/disables the order now button
 	updateOrderReadyState(ingredients) {
 		const sum = Object.keys(ingredients)
 		.map(ingredientKey => {
