@@ -30,7 +30,9 @@ export default class OrderSummary extends Component {
 				<p><strong>Total Price : £{this.props.totalPrice.toFixed(2)}</strong></p>
 				<p>Checkout?</p>
 				<Button buttonType="Danger" clicked={this.props.purchaseCanceled}>Cancel</Button>
+				
 				<Button buttonType="Success" clicked={this.props.purchaseContinued}>Continue</Button>
+				
 			</Aux>
 		)
 	}
