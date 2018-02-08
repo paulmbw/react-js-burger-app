@@ -13,6 +13,7 @@ const order = (props) => {
 		}
 	)};
 
+	
 	const ingredientOutput = ingredients.map(ig => {
 		return <p key={ig.name}>{ig.name} : {ig.amount}</p>
 	})
